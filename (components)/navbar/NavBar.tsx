@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Switch } from "@/components/ui/switch";
+import SheetNav from "@/(components)/SheetNav";
 
 export default function NavBar() {
   const [status, setStatus] = useState("unauthenticated");
@@ -25,26 +26,43 @@ const NAV = () => {
 
   const { setTheme } = useTheme();
 
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      console.log(window.innerWidth);
+      setScreenWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div>
       <div className="flex-col md:flex">
         <div className="border-b">
-          <div className="flex h-16 items-center px-4">
-            <MainNav className="mx-6 " />
-            <div className="ml-auto flex items-center space-x-4 text-black">
-              Dark Mode
-              <Switch
-                checked={darkMode}
-                onCheckedChange={() => {
-                  setTheme(darkMode ? "light" : "dark");
-                  setDarkMode(!darkMode);
-                  console.log("switched");
-                }}
-              />
-              <Search />
-              <UserNav />
+          {screenWidth < 640 ? (
+            <div className={"flex justify-end"}>
+              <SheetNav />
             </div>
-          </div>
+          ) : (
+            <div className="flex h-16 items-center px-4">
+              <MainNav className="mx-6 " />
+              <div className="ml-auto flex items-center space-x-4 gap-1">
+                Dark Mode
+                <Switch
+                  checked={darkMode}
+                  onCheckedChange={() => {
+                    setTheme(darkMode ? "light" : "dark");
+                    setDarkMode(!darkMode);
+                    console.log("switched");
+                  }}
+                />
+                <Search />
+                <UserNav />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
