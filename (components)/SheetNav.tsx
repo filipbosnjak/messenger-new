@@ -25,11 +25,11 @@ const SheetNav = (props: SheetNavProps) => {
   };
   return (
     <>
-      <Sheet open={open}>
+      <Sheet open={open} onOpenChange={toggleSheet}>
         <SheetTrigger asChild onClick={toggleSheet}>
-          <Button variant="outline">
+          <div className={"p-4 cursor-pointer"}>
             <FaBarsStaggered />
-          </Button>
+          </div>
         </SheetTrigger>
         <SheetContent className="w-[300px] sm:w-[200px]">
           <SheetHeader>
