@@ -1,6 +1,5 @@
 import { RegisterResponse } from "@/app/api/register/route";
 import { NextRequest, NextResponse } from "next/server";
-import messageServer from "@/message-server/server";
 import prisma from "@/prisma/prisma";
 
 export type MessageId = {
