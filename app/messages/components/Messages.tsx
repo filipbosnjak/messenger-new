@@ -7,6 +7,8 @@ import MessagesList from "@/app/messages/components/MessagesList";
 import { DBMessage } from "@/app/api/get-messages/route";
 import SingleMessageView from "@/app/messages/components/SingleMessageView";
 import { useRouter } from "next/navigation";
+import { ShadDataTable } from "@/(components)/ShadDataTable";
+import { Button } from "@/components/ui/button";
 
 export type MessagesProps = {
   user: string;
@@ -26,7 +28,7 @@ export const defaultMessage: DBMessage = {
   },
 };
 
-const client = new Ably.Realtime.Promise({
+export const ablyClient = new Ably.Realtime.Promise({
   authUrl: "/ably",
   authMethod: "POST",
 });
@@ -48,7 +50,14 @@ const Messages = ({ user, messages }: MessagesProps) => {
 
   return (
     <>
-      <AblyProvider client={client}>
+      <AblyProvider client={ablyClient}>
+        <Button
+          onClick={() => {
+            router.refresh();
+          }}
+        >
+          Refresh
+        </Button>
         {singleMessageView ? (
           <SingleMessageView
             message={currentMessage}
@@ -56,7 +65,7 @@ const Messages = ({ user, messages }: MessagesProps) => {
           />
         ) : (
           <div>
-            <MessagesList
+            <ShadDataTable
               user={user}
               messages={messages}
               setSingleMessageView={setSingleMessageView}

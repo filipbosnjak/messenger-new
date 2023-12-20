@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Switch } from "@/components/ui/switch";
 import SheetNav from "@/(components)/SheetNav";
+import { ablyClient } from "@/app/messages/components/Messages";
+import { AblyProvider } from "ably/react";
 
 export default function NavBar() {
   const [status, setStatus] = useState("unauthenticated");
@@ -46,9 +48,11 @@ const NAV = () => {
               <SheetNav />
             </div>
           ) : (
-            <div className="flex h-16 items-center px-4">
-              <MainNav className="mx-6 " />
-              <div className="ml-auto flex items-center space-x-4 gap-1">
+            <div className="flex items-center px-4 ">
+              <AblyProvider client={ablyClient}>
+                <MainNav className="mx-6 " />
+              </AblyProvider>
+              <div className="ml-auto flex items-center space-x-4 gap-1 text-sm">
                 Dark Mode
                 <Switch
                   checked={darkMode}

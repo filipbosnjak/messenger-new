@@ -8,6 +8,7 @@ export async function DELETE(
   res: NextResponse<RegisterResponse>,
 ) {
   const { id } = (await req.json()) as MessageId;
+  console.log(id);
 
   const deleted = await prisma.message.delete({
     where: { id: id },

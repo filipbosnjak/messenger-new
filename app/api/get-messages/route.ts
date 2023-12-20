@@ -20,10 +20,17 @@ export type DBMessage = {
 export async function POST(req: Request, res: NextResponse<DBMessage[]>) {
   const { email } = (await req.json()) as GetMessagesRequest;
 
-  const messages = await prisma.message.findMany({
+  const messages: DBMessage[] = await prisma.message.findMany({
     where: {
       to: {
         email: email,
+      },
+    },
+    include: {
+      from: {
+        select: {
+          email: true,
+        },
       },
     },
   });

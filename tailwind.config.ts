@@ -17,6 +17,9 @@ module.exports = {
         lg: "1440px",
         "2xl": "1400px",
       },
+      textColor: {
+        red: "var(--color-red)",
+      },
     },
     extend: {
       colors: {
